@@ -1,0 +1,401 @@
+{
+  "name": "Syllabus to Youtube",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3657f550-6b49-43ac-b848-d4c08c1e616d",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -720,
+        100
+      ],
+      "webhookId": "40862ab6-5016-4da9-be0b-7621bf164163"
+    },
+    {
+      "parameters": {
+        "resource": "playlist",
+        "operation": "create",
+        "title": "=Search: {{ $('When chat message received').item.json.chatInput }}",
+        "options": {}
+      },
+      "id": "4f26d33f-5717-4c59-8c8e-88bfc8a9298d",
+      "name": "Create a playlist",
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        0
+      ],
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "AJkliaS5raw4FIGf",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "limit": 2,
+        "filters": {
+          "publishedAfter": "2024-01-01T00:00:00",
+          "q": "={{ $json.chatInput }}"
+        },
+        "options": {}
+      },
+      "id": "61a0fa6b-81a0-4d34-99ff-f5b326cb3012",
+      "name": "Get many videos",
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        100
+      ],
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "AJkliaS5raw4FIGf",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "playlistItem",
+        "playlistId": "PLBayCEKolnr4FOLRfyIonw_WXHPgXJLjB",
+        "videoId": "={{ $('Get many videos').item.json.id.videoId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        380,
+        100
+      ],
+      "id": "273a05cc-51a4-4856-ba8a-b07caa003ec7",
+      "name": "Add a playlist item",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "AJkliaS5raw4FIGf",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1NLOSRrTRvk6hLBJpeXCDTg7T6SjtgX2KQeHWuFYmuWQ",
+          "mode": "list",
+          "cachedResultName": "mockup data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NLOSRrTRvk6hLBJpeXCDTg7T6SjtgX2KQeHWuFYmuWQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 753747085,
+          "mode": "list",
+          "cachedResultName": "mock_business_figures",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NLOSRrTRvk6hLBJpeXCDTg7T6SjtgX2KQeHWuFYmuWQ/edit#gid=753747085"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "videoID": "={{ $json.id.videoId }}"
+          },
+          "matchingColumns": [
+            "videoID"
+          ],
+          "schema": [
+            {
+              "id": "videoID",
+              "displayName": "videoID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -60,
+        200
+      ],
+      "id": "741fe440-32e1-4877-9d8c-72ca6fd44c95",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GqtZzkLLK8VKWoXQ",
+          "name": "n8n-global-hrishi"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1NLOSRrTRvk6hLBJpeXCDTg7T6SjtgX2KQeHWuFYmuWQ",
+          "mode": "list",
+          "cachedResultName": "mockup data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NLOSRrTRvk6hLBJpeXCDTg7T6SjtgX2KQeHWuFYmuWQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 753747085,
+          "mode": "list",
+          "cachedResultName": "mock_business_figures",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NLOSRrTRvk6hLBJpeXCDTg7T6SjtgX2KQeHWuFYmuWQ/edit#gid=753747085"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "videoID",
+              "lookupValue": "={{ $json.videoID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        160,
+        200
+      ],
+      "id": "6894bade-1806-4464-8856-4d7b3abc0753",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GqtZzkLLK8VKWoXQ",
+          "name": "n8n-global-hrishi"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1NLOSRrTRvk6hLBJpeXCDTg7T6SjtgX2KQeHWuFYmuWQ",
+          "mode": "list",
+          "cachedResultName": "mockup data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NLOSRrTRvk6hLBJpeXCDTg7T6SjtgX2KQeHWuFYmuWQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 753747085,
+          "mode": "list",
+          "cachedResultName": "mock_business_figures",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NLOSRrTRvk6hLBJpeXCDTg7T6SjtgX2KQeHWuFYmuWQ/edit#gid=753747085"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "playID": "={{ $json.id }}"
+          },
+          "matchingColumns": [
+            "playID"
+          ],
+          "schema": [
+            {
+              "id": "videoID",
+              "displayName": "videoID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "playID",
+              "displayName": "playID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -60,
+        0
+      ],
+      "id": "5931f55d-8086-4c57-acc1-123d8d25fcfc",
+      "name": "Append or update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GqtZzkLLK8VKWoXQ",
+          "name": "n8n-global-hrishi"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1NLOSRrTRvk6hLBJpeXCDTg7T6SjtgX2KQeHWuFYmuWQ",
+          "mode": "list",
+          "cachedResultName": "mockup data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NLOSRrTRvk6hLBJpeXCDTg7T6SjtgX2KQeHWuFYmuWQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 753747085,
+          "mode": "list",
+          "cachedResultName": "mock_business_figures",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NLOSRrTRvk6hLBJpeXCDTg7T6SjtgX2KQeHWuFYmuWQ/edit#gid=753747085"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "playID",
+              "lookupValue": "={{ $json.playID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        160,
+        0
+      ],
+      "id": "b9300ded-07f2-4174-84b0-1ae321c79a94",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GqtZzkLLK8VKWoXQ",
+          "name": "n8n-global-hrishi"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Get many videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a playlist": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many videos": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create a playlist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Add a playlist item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Add a playlist item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "17773d32-3bda-47b5-828a-5aa6eec2d5b0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "40c38c7b8e9978250d76668a28522f3917dc630a37d0f8ab33ca917ea7165fe5"
+  },
+  "id": "TajcJX3M0lqWf29j",
+  "tags": []
+}
